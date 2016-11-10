@@ -1,6 +1,14 @@
-var mongoose = require('mongoose');
-var Schema   = mongoose.Schema;
+/**
+ * Schema Definitions
+ *
+ */
+import mongoose from 'mongoose';
 
-var {schemaName} = new Schema({fields});
+const {schemaName} = new mongoose.Schema(
+  {fields}
+);
 
-module.exports = mongoose.model('{modelName}', {schemaName});
+// Compiles the schema into a model, opening (or creating, if
+//	nonexistent) the '{modelName}' collection in the MongoDB database
+export default mongoose.model('{modelName}', {schemaName});
+

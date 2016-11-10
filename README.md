@@ -1,18 +1,20 @@
 [![Build Status](https://travis-ci.org/DamienP33/express-mongoose-generator.svg?branch=master)](https://travis-ci.org/DamienP33/express-mongoose-generator)
-# express-mongoose-generator
+# reactGo-generator
 
-It’s a mongoose model, REST controller and Express router code generator for Express.js 4 application.
+It’s a mongoose model, REST controller and Express router code generator for reactGo. 
+
+**WARNING: it's very basic and untested at the moment.**
 
 ## Installation
 ```bash
-$ npm install -g express-mongoose-generator
+$ npm install -g reactgo-generator
 ```
 
 ## Usage
 ### Non-Interactive mode
 Generates a Mongoose model, a REST controller and Express router :
 ```bash
-$ mongoose-gen -m car -f carDoor:number,color -r
+$ reactGo-gen -m car -f carDoor:number,color -r
         create: ./models/cardModel.js
         create: ./routes/cardRoutes.js
         create: ./controllers/cardController.js
@@ -50,186 +52,158 @@ Reference (model name referred by the objectId field) : User
 Field Name (press <return> to stop adding fields) : 
 Generate Rest (yes/no) ? [yes] : 
 Files tree generation grouped by Type or by Module (t/m) ? [t] : 
-        create: ./models/carModel.js
+        create: ./models/car.js
         create: ./routes/carsRoutes.js
-        create: ./controllers/carController.js
+        create: ./controllers/car.js
 ```
 
 ## Rendering
 ### Model
-models/carModel.js :
+models/car.js :
 ```javascript
-var mongoose = require('mongoose');
-var Schema   = mongoose.Schema;
+/**
+ * Schema Definitions
+ *
+ */
+import mongoose from 'mongoose';
 
-var carSchema = new Schema({
-	"color" : String,
-	"door" : Number,
-    "owner" : {
+const carSchema = new mongoose.Schema(
+  {
+    'door' : Number,
+    'color' : String,
+    'owner' : {
         type: Schema.Types.ObjectId,
         ref: 'User'
     }
-});
+}
+);
 
-module.exports = mongoose.model('car', carSchema);
+// Compiles the schema into a model, opening (or creating, if
+//  nonexistent) the 'car' collection in the MongoDB database
+export default mongoose.model('car', carSchema);
 ```
 
-### Router
+### Router - No support for reactGo yet
 routes/carRoutes.js :
 ```javascript
 var express = require('express');
 var router = express.Router();
-var carController = require('../controllers/carController.js');
+var car = require('../controllers/car.js');
 
 /*
  * GET
  */
-router.get('/', carController.list);
+router.get('/', car.list);
 
 /*
  * GET
  */
-router.get('/:id', carController.show);
+router.get('/:id', car.show);
 
 /*
  * POST
  */
-router.post('/', carController.create);
+router.post('/', car.create);
 
 /*
  * PUT
  */
-router.put('/:id', carController.update);
+router.put('/:id', car.update);
 
 /*
  * DELETE
  */
-router.delete('/:id', carController.remove);
+router.delete('/:id', car.remove);
 
 module.exports = router;
+
 
 ```
 
 ### Controller
 controllers/carController.js :
 ```javascript
-var carModel = require('../models/carModel.js');
+import _ from 'lodash';
+import car from '../models/car';
 
 /**
- * carController.js
- *
- * @description :: Server-side logic for managing cars.
+ * List
  */
-module.exports = {
-
-    /**
-     * carController.list()
-     */
-    list: function(req, res) {
-        carModel.find(function(err, cars){
-            if(err) {
-                return res.status(500).json({
-                    message: 'Error getting car.'
-                });
-            }
-            return res.json(cars);
-        });
-    },
-
-    /**
-     * carController.show()
-     */
-    show: function(req, res) {
-        var id = req.params.id;
-        carModel.findOne({_id: id}, function(err, car){
-            if(err) {
-                return res.status(500).json({
-                    message: 'Error getting car.'
-                });
-            }
-            if(!car) {
-                return res.status(404).json({
-                    message: 'No such car'
-                });
-            }
-            return res.json(car);
-        });
-    },
-
-    /**
-     * carController.create()
-     */
-    create: function(req, res) {
-        var car = new carModel({
-			color : req.body.color,
-			door : req.body.door
-        });
-
-        car.save(function(err, car){
-            if(err) {
-                return res.status(500).json({
-                    message: 'Error saving car',
-                    error: err
-                });
-            }
-            return res.json({
-                message: 'saved',
-                _id: car._id
-            });
-        });
-    },
-
-    /**
-     * carController.update()
-     */
-    update: function(req, res) {
-        var id = req.params.id;
-        carModel.findOne({_id: id}, function(err, car){
-            if(err) {
-                return res.status(500).json({
-                    message: 'Error saving car',
-                    error: err
-                });
-            }
-            if(!car) {
-                return res.status(404).json({
-                    message: 'No such car'
-                });
-            }
-
-            car.color =  req.body.color ? req.body.color : car.color;
-			car.door =  req.body.door ? req.body.door : car.door;
-			
-            car.save(function(err, car){
-                if(err) {
-                    return res.status(500).json({
-                        message: 'Error getting car.'
-                    });
-                }
-                if(!car) {
-                    return res.status(404).json({
-                        message: 'No such car'
-                    });
-                }
-                return res.json(car);
-            });
-        });
-    },
-
-    /**
-     * carController.remove()
-     */
-    remove: function(req, res) {
-        var id = req.params.id;
-        carModel.findByIdAndRemove(id, function(err, car){
-            if(err) {
-                return res.status(500).json({
-                    message: 'Error getting car.'
-                });
-            }
-            return res.json(car);
-        });
+export function all(req, res) {
+  car.find({}).exec((err, cars) => {
+    if (err) {
+      console.log('Error in first query');
+      return res.status(500).send('Something went wrong getting the data');
     }
+
+    return res.json(cars);
+  });
+}
+
+/**
+ * Add a Topic
+ */
+export function add(req, res) {
+  car.create(req.body, (err) => {
+    if (err) {
+      console.log(err);
+      return res.status(400).send(err);
+    }
+
+    return res.status(200).send('OK');
+
+  });
+}
+
+/**
+ * Update a topic
+ */
+export function update(req, res) {
+  const query = { id: req.params.id };
+  var id = req.params.id;
+  car.findOne(query, (err) => {
+      if (err) {
+          console.log('Error when getting car');
+          return res.status(500).send('We failed to update for some reason');
+      }
+      if (!car) {
+          return res.status(404).send('No such car');
+      }
+
+      car.door = req.body.door ? req.body.door : car.door;
+            car.color = req.body.color ? req.body.color : car.color;
+            car.owner = req.body.owner ? req.body.owner : car.owner;
+            
+      car.save(function (err, car) {
+          if (err) {
+              return res.status(500).send('We failed to update car for some reason');
+          }
+
+          return res.send(car);
+      });
+  });
+}
+
+/**
+ * Remove a topic
+ */
+export function remove(req, res) {
+  const query = { id: req.params.id };
+  car.findOneAndRemove(query, (err) => {
+    if (err) {
+      console.log('Error on delete');
+      return res.status(500).send('We failed to delete for some reason');
+    }
+
+    return res.status(200).send('Removed Successfully');
+  });
+}
+
+export default {
+  all,
+  add,
+  update,
+  remove
 };
 ```
 

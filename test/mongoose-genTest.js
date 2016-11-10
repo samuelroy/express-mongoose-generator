@@ -5,7 +5,7 @@ var mkdirp = require('mkdirp');
 var rimraf = require('rimraf');
 var nexpect = require('nexpect');
 
-var binPath = path.resolve(__dirname, '../bin/mongoose-gen');
+var binPath = path.resolve(__dirname, '../bin/reactGo-gen');
 var tempDir = path.resolve(__dirname, '../temp');
 
 var CLI_PHRASES = {
@@ -26,7 +26,7 @@ var CLI_PHRASES = {
     ERROR_FIELD_TYPE_INVALID: 'Invalid Argument : Field type is not allowed'
 };
 
-describe('mongoose-gen', function () {
+describe('reactGo-gen', function () {
     describe('Non-interactive mode', function () {
         describe('Error execution', function () {
             it('Require model arg, should print error', function (done) {

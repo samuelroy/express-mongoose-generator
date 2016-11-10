@@ -1,8 +1,8 @@
 {
     "name": "express-mongoose-generator",
     "version": "3.0.1",
-    "description": "It’s a mongoose model, REST controller and Express router code generator for Express.js 4 application",
-    "author": "Damien Perrier <damienperrier33@gmail.com>",
+    "description": "It’s a mongoose model, REST controller and Express router code generator for reactGo",
+    "author": "Samuel Roy <samuelroy.p@gmail.com>",
     "contributors": [
         "romuloctba"
     ],
@@ -21,11 +21,11 @@
         "type": "git",
         "url": "https://github.com/DamienP33/express-mongoose-generator"
     },
-    "main": "bin/mongoose-gen",
+    "main": "bin/reactGo-gen",
     "scripts": {
         "test": "mocha --reporter spec --bail --check-leaks test/",
-        "lint": "jshint ./**/*.js ./bin/mongoose-gen",
-        "cs": "jscs ./**/*.js ./bin/mongoose-gen"
+        "lint": "jshint ./**/*.js ./bin/reactGo-gen",
+        "cs": "jscs ./**/*.js ./bin/reactGo-gen"
     },
     "engines": {
         "node": ">= 0.10.0"
@@ -33,7 +33,7 @@
     "license": "MIT",
     "preferGlobal": true,
     "bin": {
-        "mongoose-gen": "./bin/mongoose-gen"
+        "mongoose-gen": "./bin/reactGo-gen"
     },
     "dependencies": {
         "async": "^0.9.0",
