@@ -11,6 +11,9 @@ $ npm install -g reactgo-generator
 ```
 
 ## Usage
+
+Go to your db mongo folder: server/db/mongo then :
+
 ### Non-Interactive mode
 Generates a Mongoose model, a REST controller and Express router :
 ```bash
@@ -39,7 +42,7 @@ $ reactGo-gen -m car -f carDoor:number,color -r
 
 Generates a Mongoose model, a REST controller and Express router :
 ```bash
-$ mongoose-gen
+$ reactGo-gen
 Model Name : car
 Available types : string, number, date, boolean, array
 Field Name (press <return> to stop adding fields) : door
@@ -83,7 +86,8 @@ const carSchema = new mongoose.Schema(
 export default mongoose.model('car', carSchema);
 ```
 
-### Router - No support for reactGo yet
+### Router - No direct support for reactGo yet, add your routes in manual to server/config/routes.js
+
 routes/carRoutes.js :
 ```javascript
 var express = require('express');
@@ -121,7 +125,7 @@ module.exports = router;
 ```
 
 ### Controller
-controllers/carController.js :
+controllers/car.js :
 ```javascript
 import _ from 'lodash';
 import car from '../models/car';
@@ -216,20 +220,8 @@ Files tree generation grouped by Type or by Module (t/m) ? [t] : m
         create: ./car/carRoutes.js
 ```
 
-You then only have to add router in app.js file and MongoDB connection whit Mongoose.
-app.js :
-```javascript
-var routes = require('./routes/index');
-var cars = require('./routes/carRoutes');
- ...
-
-app.use('/', routes);
-app.use('/cars', cars);
- ...
- 
-```
 
 ## Licence
 
-Copyright (c) 2016 Damien Perrier
+Copyright (c) 2016 Samuel Roy
 Licensed under the [MIT license](LICENSE).
