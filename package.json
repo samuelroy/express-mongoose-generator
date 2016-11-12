@@ -1,10 +1,10 @@
 {
-    "name": "express-mongoose-generator",
-    "version": "3.0.1",
+    "name": "express-mongoose-reactGo-generator",
+    "version": "0.0.1",
     "description": "It’s a mongoose model, REST controller and Express router code generator for reactGo",
     "author": "Samuel Roy <samuelroy.p@gmail.com>",
     "contributors": [
-        "romuloctba"
+        "damienp33"
     ],
     "keywords": [
         "mongodb",
@@ -15,11 +15,12 @@
         "restfull",
         "api",
         "app",
-        "web"
+        "web",
+        "reactGo"
     ],
     "repository": {
         "type": "git",
-        "url": "https://github.com/DamienP33/express-mongoose-generator"
+        "url": "https://github.com/samuelroy/express-mongoose-generator-reactGo"
     },
     "main": "bin/reactGo-gen",
     "scripts": {
@@ -33,7 +34,7 @@
     "license": "MIT",
     "preferGlobal": true,
     "bin": {
-        "mongoose-gen": "./bin/reactGo-gen"
+        "reactGo-gen": "./bin/reactGo-gen"
     },
     "dependencies": {
         "async": "^0.9.0",
